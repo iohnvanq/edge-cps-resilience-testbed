@@ -13,8 +13,8 @@ This document describes the runtime data/control paths and the safety model.
 3) Feedback: actuator state/mode → coordination (when available)
 
 ## Safety model
-- Safe band: acceptable range for the process variable (e.g., temperature). Source: device safety requirements.
-- Hardware cutoff: last-resort physical limit, independent of network/software state.
+- Safe band: acceptable range for the process variable, temperature. Source: device safety requirements.
+- Hardware cutoff: last-resort physical limit, bimetal switch, independent of network/software state.
 - Degraded-safe mode: blocks remote setpoint changes; actuator relies on local sensing/logic.
 
 ## Notes
