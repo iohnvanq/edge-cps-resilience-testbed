@@ -1,89 +1,100 @@
 # edge-cps-resilience-testbed
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Status: Prototype](https://img.shields.io/badge/Status-Prototype-success)]()
-[![Hardware: ESP32 & RPi](https://img.shields.io/badge/Hardware-ESP32%20%7C%20Raspberry%20Pi-blue)]()
-
-> An ESP32-based edge cyber-physical system (CPS) testbed for studying safety-aware fallback and recovery under weak or partitioned networks.
+A small ESP32-based cyber-physical system testbed for studying degraded-safe fallback and recovery under weak or partitioned networks.
 
 ## Overview
-This repository contains a small edge CPS testbed with sensing/actuation, local fallback control, and telemetry logging. The goal is to evaluate middleware-level coordination rules (e.g., action gating and recovery coordination) under reproducible network impairments such as delay, jitter, loss, bandwidth constraints, and hard partitions.
 
-**Safety model (high-level):**
-- A device-specific **safe band** defines acceptable ranges for the controlled process variable (e.g., temperature).
-- An independent **hardware safety cutoff** acts as the last-resort physical bound.
-- Software-level degraded-safe behaviour aims to reduce unsafe excursions and reduce the need for cutoff interventions.
+This repository documents a small edge CPS testbed and the experiment notes around it. The focus is on what happens when connectivity becomes unreliable due to delay, jitter, loss, bandwidth limits, or temporary partitions.
 
-## Repository Structure
+The main research interest is how fallback and recovery should be coordinated under these conditions, especially when stale commands, delayed mode switching, and unstable recovery after reconnection can affect safety. The system uses local closed-loop behaviour during degraded operation and keeps an independent hardware cutoff as the last resort.
+
+## Research Focus
+
+This testbed is intended to support practical questions such as:
+
+- when remote coordination becomes unsafe under weak networks
+- how degraded-safe behaviour should be entered and maintained
+- how local fallback should behave during disconnection
+- how recovery should be coordinated after reconnection
+- how unsafe outcomes and recovery behaviour can be compared across repeated runs
+
+## What This Repository Currently Contains
+
 ```text
-├── actuator/             # ESP node configs for actuation & local fallback
-│   └── tortoise-actuator.yaml
-├── sensor/               # ESP node configs for sensor gateway / telemetry
-│   └── tortoise-gateway.yaml
-├── infrastructure/       # Fog/telemetry services and configs
-│   ├── docker-compose.yml
-│   ├── go2rtc.yaml
-│   └── prometheus.yml
+.
+├── docs/
+│   ├── ARCHITECTURE.md
+│   ├── DEFINITIONS.md
+│   ├── EXPERIMENT_PLAN.md
+│   ├── SECURITY_NOTES.md
+│   └── SETUP.md
+├── experiments/
+│   ├── netem_profiles/
+│   │   ├── profile_bandwidth.sh
+│   │   ├── profile_delay_jitter.sh
+│   │   ├── profile_loss_burst.sh
+│   │   └── profile_partition.sh
+│   └── run_profile.sh
+├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
-## What this testbed is (and is not)
+This public version focuses on documentation and reproducible impairment helpers. It is meant to show the current testbed direction and experiment setup rather than provide a complete deployment package.
 
-**It is:**
+## Current Status
 
-* A prototype platform to run controlled impairment experiments and collect per-run telemetry.
-* A baseline implementation to compare coordination strategies (e.g., unguarded vs action-gated control).
+- A small ESP32-based testbed has been built with local control, telemetry logging, and an independent hardware safety cutoff.
+- Operational definitions for degraded-safe behaviour, failover, recovery, and safety thresholds are being fixed for comparison.
+- Reproducible weak-network profiles are being prepared for controlled experiments.
+- Comparative impairment experiments are planned, rather than presented here as completed results.
 
-**It is not:**
+## Minimal Workflow
 
-* A claim of “air-gapped” isolation or a full zero-trust system.
-* A performance guarantee (latency/uptime) without formal measurement reports.
+A typical run is intended to follow this sequence:
 
-## Key Components
+1. prepare the local CPS nodes and broker
+2. confirm normal closed-loop behaviour
+3. apply a selected impairment profile with `tc/netem`
+4. observe mode switching, excursions, cutoff behaviour, and recovery
+5. remove the impairment
+6. record the run for later comparison
 
-* **Edge nodes (ESP32):**
+## Repository Guide
 
-  * Sensor gateway: publishes telemetry when available.
-  * Actuator node: supports degraded-safe behaviour and local closed-loop fallback.
-* **Telemetry/fog layer:**
+### `docs/`
+Project notes and working definitions.
 
-  * Docker-based services for observability (Prometheus) and optional video relay/offload (go2rtc), depending on deployment.
-* **Remote access (optional):**
+- `ARCHITECTURE.md`  
+  High-level structure of the testbed and component roles.
 
-  * Encrypted overlay access may be used for remote observability, without exposing public endpoints (details are sanitised and documented separately).
+- `DEFINITIONS.md`  
+  Operational definitions used in experiments, including degraded-safe mode, failover latency, recovery latency, safe band, and cutoff behaviour.
 
-## Getting Started (minimal)
+- `EXPERIMENT_PLAN.md`  
+  Planned comparison logic, evaluation conditions, and target metrics.
 
-1. Bring up the fog/telemetry stack:
+- `SECURITY_NOTES.md`  
+  Scope-limited notes for the public version of this repository.
 
-```bash
-cd infrastructure
-docker compose up -d
-```
+- `SETUP.md`  
+  Minimal setup notes for flashing, local services, and impairment experiments.
 
-2. Configure/flash the ESP nodes using the YAML configs in `sensor/` and `actuator/`.
-   (Exact flashing steps depend on your toolchain; see `docs/SETUP.md` once added.)
+### `experiments/`
+Helpers for reproducible weak-network testing.
 
-## Experimental Direction (summary)
+- `netem_profiles/` contains example profiles for:
+  - delay and jitter
+  - bursty loss
+  - bandwidth limitation
+  - temporary partition
 
-Planned comparisons:
+- `run_profile.sh` is a small wrapper for applying a selected profile to a target interface.
 
-* Remote-dependent control vs gateway-centred control vs distributed local fallback
-* Within distributed fallback: unguarded vs action-gated control under identical thresholds
+## Scope Note
 
-Planned primary metrics:
-
-* Cutoff intervention rate
-* Safe-band excursion frequency and duration
-* Failover latency (disconnection detection → degraded-safe entry)
-* Recovery latency (reconnection detection → stable recovery)
-
-See `docs/EXPERIMENT_PLAN.md` for the full plan and definitions.
-
-## Origin
-
-This testbed started as a small environmental control project and is being repurposed as a research-oriented prototype for studying weak-network resilience in edge CPS.
+This repository should be read as a small research-oriented testbed and documentation package. It does not claim a complete production system. The goal is to make the current setup, assumptions, and experiment direction clear enough to support further study.
 
 ## License
 
-MIT License (see `LICENSE`).
+MIT License. See `LICENSE`.
