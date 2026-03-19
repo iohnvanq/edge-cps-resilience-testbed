@@ -16,7 +16,7 @@ This testbed is intended to support practical questions such as:
 - how degraded-safe behaviour should be entered and maintained
 - how local fallback should behave during disconnection
 - how recovery should be coordinated after reconnection
-- how unsafe outcomes and recovery behaviour can be observed across repeated runs
+- how unsafe outcomes and recovery behaviour appear across repeated runs
 
 ## What This Repository Currently Contains
 
@@ -45,13 +45,13 @@ This public version mainly contains documentation and reproducible impairment he
 ## Current Status
 
 - A small ESP32-based testbed has been built with local control, telemetry logging, and an independent hardware safety cutoff.
-- Operational definitions for degraded-safe behaviour, failover, recovery, and safety thresholds are being finalised for comparison.
+- Operational definitions for degraded-safe behaviour, failover, recovery, and safety thresholds are being finalised for the planned comparisons.
 - Reproducible weak-network profiles are being prepared for controlled experiments.
 - Comparative impairment experiments are planned, rather than presented here as completed results.
 
 ## Minimal Workflow
 
-A typical run currently follows this sequence:
+A typical run currently follows this workflow:
 
 1. prepare the local CPS nodes and broker
 2. confirm normal closed-loop behaviour
@@ -93,7 +93,7 @@ Helpers for reproducible weak-network testing.
 
 ## Scope Note
 
-This repository should be read as a small research-oriented testbed and documentation package. It does not claim a complete production system. The goal is to make the current setup, assumptions, and experiment direction clear enough to show what is being built and studied.
+This repository should be read as a small research-oriented testbed and documentation package. It does not claim a complete production system. The goal is to make the current setup, assumptions, and experiment direction clear enough to show the testbed’s current scope and research direction.
 
 ## License
 
