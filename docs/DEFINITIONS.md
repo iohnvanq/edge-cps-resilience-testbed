@@ -26,7 +26,7 @@ An event in which the independent hardware safety cutoff is triggered.
 
 A period during which the process variable leaves the safe band.
 
-- **Excursion frequency**: the number of distinct out-of-band events during a run
+- **Excursion frequency**: the number of distinct excursion events during a run
 - **Excursion duration**: the total time spent outside the safe band during a run
 
 ## Degraded-safe mode
@@ -35,23 +35,23 @@ A local safety-preserving mode entered when remote coordination is no longer tim
 
 ## Local closed-loop control
 
-A control path that continues operating at the node even when remote coordination is unavailable or restricted.
+A control path that continues operating at the edge node even when remote coordination is unavailable or restricted.
 
 ## Disconnection detection
 
-Disconnection is detected using a fixed heartbeat timeout. The current initial value is **Th = 3 s**.
+Disconnection is detected using a fixed heartbeat timeout. The current initial value is `Th = 3 s`.
 
-## Failover latency
+## Detection-to-failover latency
 
-Failover latency is the time elapsed from the disconnection detection event (heartbeat timeout) to confirmed entry into degraded-safe mode.
+Detection-to-failover latency is the time elapsed from the heartbeat-timeout event to confirmed entry into degraded-safe mode.
 
 ## Reconnection detection
 
-Reconnection is recognised only when the MQTT client has re-established its session and the first valid post-reconnection heartbeat or message is successfully received. A brief link return without restored message flow is not counted as recovery.
+Reconnection is recognised at the edge node only when the MQTT client has re-established its session and the first valid post-reconnection heartbeat or message is successfully received by the edge node. A brief link return without restored message flow is not counted as recovery.
 
 ## Stable recovery
 
-Stable recovery is defined by the process variable remaining within the safe band while the system is back in normal mode for a fixed time window. The current initial value is **W = 10 s**.
+Stable recovery is defined by the process variable remaining within the safe band while the system is back in normal mode for a fixed time window. The current initial value is `W = 10 s`.
 
 ## Recovery latency
 
