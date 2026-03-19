@@ -1,30 +1,62 @@
 # Definitions
 
+This document records the operational definitions currently used in this testbed. These definitions are intended to keep comparison conditions consistent across planned impairment experiments.
+
+## Weak-network condition
+
+A network condition with injected delay, jitter, packet loss, bandwidth limits, or temporary partitions, reproduced with `tc/netem`.
+
 ## Process variable (PV)
-Example: temperature.
+
+The measured quantity that the local controller is trying to regulate. In the current testbed, this may be a value such as temperature.
 
 ## Safe band
-Range derived from device safety requirements. Keep thresholds fixed across baselines.
+
+The acceptable operating range for the process variable. For comparison purposes, the safe band is fixed within each run and is not changed during fallback or recovery.
+
+## Cutoff threshold
+
+A hard safety threshold outside the safe band that triggers hardware-level intervention. This threshold remains fixed within each run.
 
 ## Cutoff intervention
-An event where the independent hardware safety cutoff triggers.
+
+An event in which the independent hardware safety cutoff is triggered.
 
 ## Safe-band excursion
-PV leaves the safe band. Record:
-- frequency (count per run)
-- duration (total time outside band per run)
+
+A period during which the process variable leaves the safe band.
+
+- **Excursion frequency**: the number of distinct out-of-band events during a run
+- **Excursion duration**: the total time spent outside the safe band during a run
+
+## Degraded-safe mode
+
+A local safety-preserving mode entered when remote coordination is no longer timely or trustworthy. In this mode, new remote setpoint changes are blocked while local closed-loop control continues.
+
+## Local closed-loop control
+
+A control path that continues operating at the node even when remote coordination is unavailable or restricted.
 
 ## Disconnection detection
-Heartbeat timeout Th (fixed).
+
+Disconnection is detected using a fixed heartbeat timeout. The current initial value is **Th = 3 s**.
 
 ## Failover latency
-Time from disconnection detection to degraded-safe entry.
+
+The time from disconnection detection to confirmed entry into degraded-safe mode.
 
 ## Reconnection detection
-Link restoration detection (fixed criterion; define for your setup).
+
+Reconnection is recognised only when the MQTT client has re-established its session and successful publish or subscribe traffic has resumed. A brief link return without restored message flow is not counted as recovery.
 
 ## Stable recovery
-PV stays within safe band AND mode remains normal for W seconds.
+
+Stable recovery is defined by the process variable remaining within the safe band while the system is back in normal mode for a fixed time window. The current initial value is **W = 10 s**.
 
 ## Recovery latency
-Time from reconnection detection to stable recovery.
+
+The time from reconnection detection to stable recovery.
+
+## Unsafe outcome
+
+An unsafe outcome includes either a cutoff intervention or a safe-band excursion.
