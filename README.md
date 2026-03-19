@@ -16,7 +16,7 @@ This testbed is intended to support practical questions such as:
 - how degraded-safe behaviour should be entered and maintained
 - how local fallback should behave during disconnection
 - how recovery should be coordinated after reconnection
-- how unsafe outcomes and recovery behaviour can be compared across repeated runs
+- how unsafe outcomes and recovery behaviour can be observed across repeated runs
 
 ## What This Repository Currently Contains
 
@@ -40,18 +40,18 @@ This testbed is intended to support practical questions such as:
 └── README.md
 ```
 
-This public version focuses on documentation and reproducible impairment helpers. It is meant to show the current testbed direction and experiment setup rather than provide a complete deployment package.
+This public version mainly contains documentation and reproducible impairment helpers. It is intended to show the current testbed setup and experiment direction, rather than serve as a complete deployment package.
 
 ## Current Status
 
 - A small ESP32-based testbed has been built with local control, telemetry logging, and an independent hardware safety cutoff.
-- Operational definitions for degraded-safe behaviour, failover, recovery, and safety thresholds are being fixed for comparison.
+- Operational definitions for degraded-safe behaviour, failover, recovery, and safety thresholds are being finalised for comparison.
 - Reproducible weak-network profiles are being prepared for controlled experiments.
 - Comparative impairment experiments are planned, rather than presented here as completed results.
 
 ## Minimal Workflow
 
-A typical run is intended to follow this sequence:
+A typical run currently follows this sequence:
 
 1. prepare the local CPS nodes and broker
 2. confirm normal closed-loop behaviour
@@ -93,7 +93,7 @@ Helpers for reproducible weak-network testing.
 
 ## Scope Note
 
-This repository should be read as a small research-oriented testbed and documentation package. It does not claim a complete production system. The goal is to make the current setup, assumptions, and experiment direction clear enough to support further study.
+This repository should be read as a small research-oriented testbed and documentation package. It does not claim a complete production system. The goal is to make the current setup, assumptions, and experiment direction clear enough to show what is being built and studied.
 
 ## License
 
