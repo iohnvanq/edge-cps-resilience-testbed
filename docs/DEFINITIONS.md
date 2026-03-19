@@ -8,11 +8,11 @@ A network condition with injected delay, jitter, packet loss, bandwidth limits, 
 
 ## Process variable (PV)
 
-The measured quantity that the local controller is trying to regulate. In the current testbed, this may be a value such as temperature.
+The measured quantity that the local controller is trying to regulate. In the current testbed, one example is temperature.
 
 ## Safe band
 
-The acceptable operating range for the process variable. For comparison purposes, the safe band is fixed within each run and is not changed during fallback or recovery.
+The acceptable operating range for the process variable during normal and degraded-safe operation. For comparison purposes, the safe band is fixed within each run and is not changed during fallback or recovery.
 
 ## Cutoff threshold
 
@@ -47,7 +47,7 @@ The time from disconnection detection to confirmed entry into degraded-safe mode
 
 ## Reconnection detection
 
-Reconnection is recognised only when the MQTT client has re-established its session and successful publish or subscribe traffic has resumed. A brief link return without restored message flow is not counted as recovery.
+Reconnection is recognised only when the MQTT client has re-established its session and successful publish or subscribe traffic has resumed normally. A brief link return without restored message flow is not counted as recovery.
 
 ## Stable recovery
 
@@ -59,4 +59,4 @@ The time from reconnection detection to stable recovery.
 
 ## Unsafe outcome
 
-An unsafe outcome includes either a cutoff intervention or a safe-band excursion.
+An unsafe outcome includes either a cutoff intervention or a process-variable excursion outside the safe band.
