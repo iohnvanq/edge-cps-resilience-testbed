@@ -43,11 +43,11 @@ Disconnection is detected using a fixed heartbeat timeout. The current initial v
 
 ## Failover latency
 
-The time from disconnection detection to confirmed entry into degraded-safe mode.
+Failover latency is the time elapsed from the disconnection detection event (heartbeat timeout) to confirmed entry into degraded-safe mode.
 
 ## Reconnection detection
 
-Reconnection is recognised only when the MQTT client has re-established its session and successful publish or subscribe traffic has resumed normally. A brief link return without restored message flow is not counted as recovery.
+Reconnection is recognised only when the MQTT client has re-established its session and the first valid post-reconnection heartbeat or message is successfully received. A brief link return without restored message flow is not counted as recovery.
 
 ## Stable recovery
 
